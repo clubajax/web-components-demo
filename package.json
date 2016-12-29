@@ -1,0 +1,33 @@
+{
+  "name": "web-components-demos",
+  "version": "0.0.0",
+  "description": "Supporting content for Web Components v1 Club AJAX Presentation",
+  "main": "demos/index.html",
+  "scripts": {
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clubajax/web-components-demo.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "UI"
+  ],
+  "author": "anm9tr@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/clubajax/web-components-demo/issues"
+  },
+  "homepage": "https://github.com/clubajax/web-components-demo#readme",
+  "dependencies": {
+    "BaseComponent": "clubajax/BaseComponent#master",
+    "on": "clubajax/on#v1.7.5",
+    "dom": "clubajax/dom#v1.3.3",
+    "store": "clubajax/store#v0.8.1",
+    "key-nav": "clubajax/key-nav"
+  },
+  "devDependencies": {
+
+  }
+}

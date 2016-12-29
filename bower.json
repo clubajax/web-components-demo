@@ -1,0 +1,22 @@
+{
+  "name": "web-components-demos",
+  "description": "Supporting content for Web Components v1 Club AJAX Presentation",
+  "main": "demos/index.html",
+  "authors": [
+    "anm9tr@gmail.com"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Web Components",
+    "Custom Elements",
+    "JavaScript",
+    "UI"
+  ],
+  "homepage": "https://github.com/clubajax/web-components-demo",
+  "dependencies": {
+    "on": "clubajax/on#v1.7.5",
+    "dom": "clubajax/dom#v1.3.3",
+    "store": "clubajax/store#v0.8.1",
+    "webcomponents": "webcomponents/custom-elements#1.0.0-alpha.3"
+  }
+}
