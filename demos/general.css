@@ -1,0 +1,44 @@
+body{
+    padding: 20px;
+    font-family: sans-serif;
+}
+input,
+label{
+    font-size: 12px;
+    display: inline-block;
+    padding: 5px;
+}
+
+ca-shady,
+ca-progressive{
+    display: block;
+    padding: 10px;
+    margin: 10px 0;
+}
+ca-shady section{
+    padding: 5px;
+    border: 1px solid #ccc;
+    background-color: antiquewhite;
+    border-radius: 3px;
+    margin: 5px 0;
+}
+
+
+ca-progressive{
+    background-color: #eee;
+    border: 1px solid #ccc;
+    font-style: italic;
+    color: #666;
+}
+ca-progressive:after{
+    content: 'Currently disabled';
+}
+ca-progressive.defined:after{
+    content: '';
+}
+ca-progressive.defined{
+    font-style: normal;
+}
+ca-progressive input{
+    width: 300px;
+}

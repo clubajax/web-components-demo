@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Progressive Demo</title>
+    <link rel="stylesheet" href="./general.css" />
+    <script src="../bower_components/dom/src/dom.js"></script>
+    <script src="../bower_components/on/dist/on.js"></script>
+</head>
+<body>
+    <h1>Progressive Demo</h1>
+    <ca-progressive label="Start" value="This is the element value"></ca-progressive>
+    <button id="defProg">Define</button>
+    <script src="progressive.js"></script>
+    <script>
+        on('defProg', 'click', defineProgressive);
+    </script>
+</body>
+</html>
