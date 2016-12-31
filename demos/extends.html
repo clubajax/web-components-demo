@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Extends Demo</title>
+    <script>
+        if(typeof customElements !== 'undefined') {
+            //customElements.forcePolyfill = true;
+        }
+    </script>
+    <script src="../bower_components/webcomponents/src/custom-elements.js"></script>
+    <link rel="stylesheet" href="./general.css" />
+    <script src="../bower_components/dom/src/dom.js"></script>
+    <script src="../bower_components/on/dist/on.js"></script>
+
+    <script src="extends.js"></script>
+</head>
+<body>
+    <h1>Extends Demo</h1>
+    <button is="super-button">super</button>
+
+    <script>
+        var button =  document.createElement('button', 'super-button');
+        button.innerHTML = 'attached';
+        document.body.appendChild(button);
+    </script>
+</body>
+</html>
