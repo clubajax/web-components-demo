@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <title>Extends Demo</title>
-    <script>
-        if(typeof customElements !== 'undefined') {
-            //customElements.forcePolyfill = true;
-        }
-    </script>
+
     <script src="../bower_components/webcomponents/src/custom-elements.js"></script>
     <link rel="stylesheet" href="./general.css" />
     <script src="../bower_components/dom/src/dom.js"></script>
@@ -15,13 +11,41 @@
     <script src="extends.js"></script>
 </head>
 <body>
+    <script>
+
+        var observer = new MutationObserver(function (mutations) {
+
+            console.log('mutations', mutations);
+            var nodes = mutations.filter(function (event) {
+                return event.addedNodes.length && event.addedNodes[0].nodeType === 1;
+            }).map(function (event) {
+                return event.addedNodes[0];
+            });
+            if(nodes.length) {
+                console.log('nodes', nodes);
+                nodes.forEach(function (node) {
+                    if(node.localName === 'section'){
+                        console.log('section children', node.children);
+                    }
+                });
+            }
+        });
+        observer.observe(document.documentElement, {childList: true, subtree: 1});
+
+    </script>
     <h1>Extends Demo</h1>
+    <h3>*extend does not work on elements</h3>
+    <ul>
+        <li>uno</li>
+        <li>dos</li>
+        <li>tre</li>
+    </ul>
     <button is="super-button">super</button>
 
     <script>
-        var button =  document.createElement('button', 'super-button');
-        button.innerHTML = 'attached';
-        document.body.appendChild(button);
+        var s = dom('section', {});
+        dom('button', {html: 'attached'}, s);
+        document.body.appendChild(s);
     </script>
 </body>
 </html>

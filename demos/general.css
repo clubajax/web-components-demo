@@ -30,15 +30,22 @@ ca-progressive{
     font-style: italic;
     color: #666;
 }
+
+
 ca-progressive:after{
-    content: 'Currently disabled';
-}
-ca-progressive.defined:after{
     content: '';
 }
-ca-progressive.defined{
+ca-progressive{
     font-style: normal;
 }
+ca-progressive:not(:defined) {
+    font-style: italic;
+}
+ca-progressive:not(:defined):after{
+    content: 'Currently disabled';
+}
+
+
 ca-progressive input{
     width: 300px;
 }

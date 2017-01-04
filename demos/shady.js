@@ -16,7 +16,7 @@
             shadow.innerHTML = `
                 <slot name="title">Default Title</slot>
                 <slot name="content">Default Content</slot>
-                <section>This is a Shadow DOM &lt;section&gt;</section>
+                <section>This is a Shadow DOM [section]</section>
             `;
         }
     }
