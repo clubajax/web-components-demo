@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "description": "Supporting content for Web Components v1 Club AJAX Presentation",
   "main": "demos/index.html",
-  "scripts": {
-
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/clubajax/web-components-demo.git"
@@ -28,6 +26,7 @@
     "key-nav": "clubajax/key-nav"
   },
   "devDependencies": {
-
+    "grunt": "^1.0.1",
+    "grunt-browserify": "^5.0.0"
   }
 }
