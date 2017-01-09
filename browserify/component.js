@@ -7,7 +7,8 @@ console.log('dep not dupe:', dep);
 let component = {
     id:'c'
 };
-console.log('component -----> ', component);
+console.log('component ...> ', component);
 
+console.log(new Date());
 
 module.exports = component;
