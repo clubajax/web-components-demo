@@ -26,10 +26,13 @@
     "key-nav": "clubajax/key-nav"
   },
   "devDependencies": {
+    "babel-preset-latest": "^6.16.0",
+    "babelify": "^7.3.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-concurrent": "^2.3.1",
     "grunt-contrib-less": "^1.4.0",
-    "grunt-contrib-watch": "^1.0.0"
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-http-server": "^2.0.0"
   }
 }

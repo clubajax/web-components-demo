@@ -20,8 +20,11 @@ module.exports = function (grunt) {
             // source maps have to be inline.
             // grunt-exorcise promises to do this, but it seems overly complicated
             vendor: {
-                // different convention than "main" - this gets the extrenal
+                // different convention than "main" - this gets the external
                 // modules to work properly
+                // Note that vendor does not run through babel - not expecting
+                // any transforms. If we were, that should either be built into
+                // the app or be another vendor-type file
                 src: ['.'],
                 dest: 'dist/vendor.js',
                 options: {
@@ -36,13 +39,15 @@ module.exports = function (grunt) {
             },
             main: {
                 files: {
-                    'dist/output.js': ['browserify/component.js']
+                    'dist/output.js': ['browserify/app.js']
                 },
                 options: {
-                    // not using browserify watch; it did not trigger a page reload
-                    watch: watch,
-                    keepAlive: watch,
+                    // not using browserify-watch; it did not trigger a page reload
+                    watch: false,
+                    keepAlive: false,
                     external: vendorAliases,
+                    ///transform:['babelify', {presets: 'latest'}],
+                    transform: [["babelify", { "presets": ["latest"] }]],
                     browserifyOptions: {
                         debug: sourceMaps
                     }
@@ -88,31 +93,57 @@ module.exports = function (grunt) {
                 livereload: watchPort
             }
         },
-        
+
+        'http-server': {
+            main: {
+                // where to serve from (root is least confusing)
+                root: '.',
+                // port (if you run several projects at once these should all be different)
+                port: '9100',
+                // host (0.0.0.0 is most versatile: it gives localhost, and it works over an Intranet)
+                host: '0.0.0.0',
+                cache: -1,
+                showDir: true,
+                autoIndex: true,
+                ext: "html",
+                runInBackground: false
+                // route requests to another server:
+                //proxy: dev.machine:80
+            }
+        },
+
         concurrent: {
             target: {
-                tasks: ['watch', 'serve'],
+                tasks: ['watch', 'http-server'],
                 options: {
                     logConcurrentOutput: true
                 }
             }
         }
     });
-    
-    grunt.event.on('watch', function (action, filepath) {
-        console.log('changed.file', action, filepath);
-    });
-    
-    grunt.event.on('error', function () {
-        console.log('------- ERROR', arguments);
-    });
-    
+
+    // simple task that builds vendor and dev files
     grunt.registerTask('build', function (which) {
         grunt.task.run('browserify:vendor');
         grunt.task.run('browserify:main');
     });
-    
+
+
+    // The general task: builds, serves and watches
+    grunt.registerTask('dev', function (which) {
+        grunt.task.run('build');
+        grunt.task.run('less');
+        grunt.task.run('concurrent:target');
+    });
+
+    // alias for server
+    grunt.registerTask('serve', function (which) {
+        grunt.task.run('http-server');
+    });
+
+    grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-http-server');
 };
