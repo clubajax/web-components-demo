@@ -9,7 +9,7 @@ class Base {
     }
 
     connectedCallback () {
-        console.log('Base.connected!', this.id);
+        console.log('Base.connected', this.id);
     }
 }
 

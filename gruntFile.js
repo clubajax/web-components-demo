@@ -5,14 +5,19 @@ let
 
 module.exports = function (grunt) {
     
-    // collect vendor files from node_modules
+    // collect dependencies from node_modules
+    // https://github.com/thlorenz/browserify-shim/issues/40
+    // https://gist.github.com/revolunet/6905b139cc63219df926
+    // FIXME - using correct vendor paths?
     let nm = path.resolve(__dirname, 'node_modules'),
         dom = path.resolve(nm, 'dom/src/dom.js'),
         on = path.resolve(nm, 'on/dist/on.js'),
         vendorAliases = ['dom'],
         sourceMaps = false,
         watch = false,
-        watchPort = 35730;
+        watchPort = 35730,
+        babelTransform = [["babelify", { "presets": ["latest"] }]],
+        devBabel = false;
     
     grunt.initConfig({
         
@@ -20,7 +25,7 @@ module.exports = function (grunt) {
             // source maps have to be inline.
             // grunt-exorcise promises to do this, but it seems overly complicated
             vendor: {
-                // different convention than "main" - this gets the external
+                // different convention than "dev" - this gets the external
                 // modules to work properly
                 // Note that vendor does not run through babel - not expecting
                 // any transforms. If we were, that should either be built into
@@ -28,16 +33,18 @@ module.exports = function (grunt) {
                 src: ['.'],
                 dest: 'dist/vendor.js',
                 options: {
+                    // expose the modules
                     alias: vendorAliases.map(function (module) {
                         return module + ':';
                     }),
+                    // not consuming any modules
                     external: null,
                     browserifyOptions: {
                         debug: sourceMaps
                     }
                 }
             },
-            main: {
+            dev: {
                 files: {
                     'dist/output.js': ['browserify/app.js']
                 },
@@ -46,8 +53,26 @@ module.exports = function (grunt) {
                     watch: false,
                     keepAlive: false,
                     external: vendorAliases,
-                    ///transform:['babelify', {presets: 'latest'}],
-                    transform: [["babelify", { "presets": ["latest"] }]],
+                    browserifyOptions: {
+                        debug: sourceMaps
+                    },
+                    // transform not using babel in dev-mode.
+                    // if developing in IE or using very new features,
+                    // change devBabel to `true`
+                    transform: devBabel ? babelTransform : [],
+                    postBundleCB: function (err, src, next) {
+                        console.timeEnd('build');
+                        next(err, src);
+                    }
+                }
+            },
+            prod: {
+                files: {
+                    'dist/output.js': ['browserify/app.js']
+                },
+                options: {
+                    external: vendorAliases,
+                    transform: babelTransform,
                     browserifyOptions: {
                         debug: sourceMaps
                     }
@@ -85,7 +110,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: ['./browserify/**/*.js'],
-                tasks: ['browserify:main']
+                tasks: ['build-dev']
             },
             // IMPORTANT: this options.livereload will work in the scripts
             // namespace, but then the CSS reload will not work properly
@@ -122,10 +147,23 @@ module.exports = function (grunt) {
         }
     });
 
-    // simple task that builds vendor and dev files
+    //
+    grunt.registerTask('build-dev', function (which) {
+        console.time('build');
+        grunt.task.run('browserify:dev');
+
+    });
+
+    // task that builds vendor and dev files during development
     grunt.registerTask('build', function (which) {
         grunt.task.run('browserify:vendor');
-        grunt.task.run('browserify:main');
+        grunt.task.run('build-dev');
+    });
+
+    // task that builds files for production
+    grunt.registerTask('deploy', function (which) {
+        grunt.task.run('browserify:vendor');
+        grunt.task.run('browserify:prod');
     });
 
 
